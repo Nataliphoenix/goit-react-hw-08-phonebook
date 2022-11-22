@@ -6,23 +6,23 @@ import {
 import { deleteContact } from 'redux/contactsSlice.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { getContactValue } from '../../redux/contactsSlice.js';
-import { getFilterValue } from '../../redux/filtersSlice.js';
+import { getFilterValue } from '../../redux/filterSlice.js';
 
 export const ContactList = () => {
   const dispatch = useDispatch();
-  const contactsItem = useSelector(getContactValue);
+  const contacts = useSelector(getContactValue);
   const filter = useSelector(getFilterValue);
 
   const filterToLowerCase = filter.toLowerCase();
-  const filterContact = contactsItem.filter(contact =>
+  const contactsItems = contacts.filter(contact =>
     contact.name.toLowerCase().includes(filterToLowerCase)
   );
 
   return (
     <ContactListItems>
-      {filterContact ? (
+      {contactsItems ? (
         <>
-          {filterContact.map(contact => {
+          {contactsItems.map(contact => {
             return (
               <ContactListItem key={contact.id}>
                 <p>
@@ -31,9 +31,7 @@ export const ContactList = () => {
                 </p>
                 <ContactListButton
                   type="button"
-                  onClick={() => {
-                    dispatch(deleteContact(contact.id));
-                  }}
+                  onClick={() => dispatch(deleteContact(contact.id))}
                 >
                   Delete
                 </ContactListButton>
