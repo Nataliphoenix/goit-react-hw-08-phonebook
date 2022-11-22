@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { BsJournalPlus } from 'react-icons/bs';
 import { BsTelephone } from 'react-icons/bs';
 import { nanoid } from 'nanoid';
@@ -18,7 +18,6 @@ export const ContactForm = () => {
 
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
-  const [id, setId] = useState('');
 
   const nameId = nanoid();
   const numberId = nanoid();
@@ -36,10 +35,6 @@ export const ContactForm = () => {
     setNumber('');
   };
 
-  useEffect(() => {
-    return setId(nanoid());
-  }, [name, number]);
-
   const addNumberContact = ({ name, number }) => {
     const newContact = { id: nanoid(), name, number };
 
@@ -49,7 +44,7 @@ export const ContactForm = () => {
 
     isExistContact
       ? alert(`${newContact.name} is already in contacts`)
-      : dispatch(addContact({ name, number, id }));
+      : dispatch(addContact(newContact));
   };
 
   const handleAddContacts = e => {
