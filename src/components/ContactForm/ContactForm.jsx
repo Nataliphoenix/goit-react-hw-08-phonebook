@@ -1,55 +1,51 @@
 import { useState } from 'react';
 import { BsJournalPlus } from 'react-icons/bs';
 import { BsTelephone } from 'react-icons/bs';
-import { nanoid } from 'nanoid';
 import {
   Form,
   ContactFormInput,
   ContactFormLabel,
   ContactFormButton,
 } from 'components/ContactForm/ContactForm.styled';
-import { useDispatch, useSelector } from 'react-redux';
-import { addContact } from '../../redux/contactsSlice.js';
-import { getContactValue } from '../../redux/contactsSlice.js';
+import {
+  useGetContactsQuery,
+  useAddContactMutation,
+} from 'redux/contactsSlice.js';
+import { toast } from 'react-toastify';
 
 export const ContactForm = () => {
-  const dispatch = useDispatch();
-  const contactsItem = useSelector(getContactValue);
-
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
-
-  const nameId = nanoid();
-  const numberId = nanoid();
-
-  const handleChangeName = e => {
-    setName(e.target.value);
-  };
-
-  const handleChangeNumber = e => {
-    setNumber(e.target.value);
-  };
+  const [newName, setNewName] = useState('');
+  const [newPhone, setNewPhone] = useState('');
+  const [addContact] = useAddContactMutation();
+  const { data } = useGetContactsQuery();
 
   const reset = () => {
-    setName('');
-    setNumber('');
+    setNewName('');
+    setNewPhone('');
   };
 
-  const addNumberContact = ({ name, number }) => {
-    const newContact = { id: nanoid(), name, number };
+  const addNumberContact = async ({ newName, newPhone }) => {
+    const newContact = { name: newName, phone: newPhone };
 
-    const isExistContact = contactsItem.find(
+    const isExistContact = data.find(
       contact => contact.name === newContact.name
     );
 
-    isExistContact
-      ? alert(`${newContact.name} is already in contacts`)
-      : dispatch(addContact(newContact));
+    if (!isExistContact) {
+      try {
+        await addContact(newContact);
+        toast.success(`Contact ${newContact.name} added`);
+      } catch (error) {
+        toast.error('Oops! Something went wrong. Please, try again!');
+      }
+    } else {
+      toast.error(`${newContact.name} is already in contacts`);
+    }
   };
 
   const handleAddContacts = e => {
     e.preventDefault();
-    addNumberContact({ name, number });
+    addNumberContact({ newName, newPhone });
     reset();
   };
 
@@ -60,9 +56,8 @@ export const ContactForm = () => {
         <ContactFormInput
           type="text"
           name="name"
-          id={nameId}
-          value={name}
-          onChange={handleChangeName}
+          value={newName}
+          onChange={e => setNewName(e.target.value)}
           placeholder="Enter name"
           pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
           title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
@@ -74,9 +69,8 @@ export const ContactForm = () => {
         <ContactFormInput
           type="tel"
           name="number"
-          id={numberId}
-          value={number}
-          onChange={handleChangeNumber}
+          value={newPhone}
+          onChange={e => setNewPhone(e.target.value)}
           placeholder="Enter number"
           pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
           title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"

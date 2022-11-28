@@ -1,4 +1,5 @@
 import React from 'react';
+import { ToastContainer } from 'react-toastify';
 import { Container } from './App.styled';
 import { Section } from 'components/Section/Section';
 import { ContactForm } from 'components/ContactForm/ContactForm';
@@ -16,6 +17,8 @@ export const App = () => {
         <Filter />
         <ContactList />
       </Section>
+
+      <ToastContainer position="top-right" autoClose={3000} />
     </Container>
   );
 };
