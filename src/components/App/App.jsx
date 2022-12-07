@@ -26,16 +26,15 @@
 import { useEffect, lazy } from 'react';
 import { useDispatch } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
-import { Layout } from './Layout';
-import { PrivateRoute } from './PrivateRoute';
-import { RestrictedRoute } from './RestrictedRoute';
+import { Layout } from '../Layout/Layout.js';
+import { PrivateRoute } from '../PrivateRoute/PrivateRoute.js';
+import { RestrictedRoute } from '../RestrictedRoute/RestrictedRoute.js';
 import { refreshUser } from 'redux/auth/operations.js';
 import { useAuth } from 'hooks';
 
 const HomePage = lazy(() => import('../../pages/Home.js'));
 const RegisterPage = lazy(() => import('../../pages/Register.js'));
 const LoginPage = lazy(() => import('../../pages/Login.js'));
-// const TasksPage = lazy(() => import('../pages/Tasks'));
 const ContactsPage = lazy(() => import('../../pages/Contacts.js'));
 
 export const App = () => {
@@ -55,13 +54,16 @@ export const App = () => {
         <Route
           path="/register"
           element={
-            <RestrictedRoute redirectTo="/tasks" component={<RegisterPage />} />
+            <RestrictedRoute
+              redirectTo="/contacts"
+              component={<RegisterPage />}
+            />
           }
         />
         <Route
           path="/login"
           element={
-            <RestrictedRoute redirectTo="/tasks" component={<LoginPage />} />
+            <RestrictedRoute redirectTo="/contacts" component={<LoginPage />} />
           }
         />
         <Route

@@ -2,9 +2,9 @@ import { Navigation } from '../Navigation/Navigation';
 import { UserMenu } from '../UserMenu/UserMenu';
 import { AuthNav } from '../AuthNav/AuthNav';
 import { useAuth } from 'hooks';
-import { Header } from './App.styled';
+import { Header } from './AppBar.styled.js';
 
-export const App = () => {
+export const AppBar = () => {
   const { isLoggedIn } = useAuth();
 
   return (
@@ -14,4 +14,3 @@ export const App = () => {
     </Header>
   );
 };
-

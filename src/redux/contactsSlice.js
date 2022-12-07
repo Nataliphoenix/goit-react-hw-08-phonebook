@@ -34,3 +34,7 @@ export const {
   useAddContactMutation,
   useDeleteContactMutation,
 } = contactsApi;
+
+// selectors
+
+export const selectLoading = state => state.tasks.loading;
