@@ -31,11 +31,12 @@ import { PrivateRoute } from '../PrivateRoute/PrivateRoute.js';
 import { RestrictedRoute } from '../RestrictedRoute/RestrictedRoute.js';
 import { refreshUser } from 'redux/auth/operations.js';
 import { useAuth } from 'hooks';
+import { Loader } from 'components/Loader/Loader.jsx';
 
-const HomePage = lazy(() => import('../../pages/Home.js'));
-const RegisterPage = lazy(() => import('../../pages/Register.js'));
-const LoginPage = lazy(() => import('../../pages/Login.js'));
-const ContactsPage = lazy(() => import('../../pages/Contacts.js'));
+const HomePage = lazy(() => import('../../pages/Home/Home.jsx'));
+const RegisterPage = lazy(() => import('../../pages/Register/Register.js'));
+const LoginPage = lazy(() => import('../../pages/Login/Login.js'));
+const ContactsPage = lazy(() => import('../../pages/Contacts/Contacts.jsx'));
 
 export const App = () => {
   const dispatch = useDispatch();
@@ -46,7 +47,7 @@ export const App = () => {
   }, [dispatch]);
 
   return isRefreshing ? (
-    <b>Refreshing user...</b>
+    <Loader />
   ) : (
     <Routes>
       <Route path="/" element={<Layout />}>

@@ -3,9 +3,6 @@ import styled from 'styled-components';
 export const Form = styled.form`
   display: flex;
   flex-direction: column;
-
-  margin-left: auto;
-  margin-right: auto;
 `;
 
 export const ContactFormLabel = styled.label`
